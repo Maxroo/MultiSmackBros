@@ -28,9 +28,9 @@ ACharacterBase::ACharacterBase()
 	addforce = GetActorForwardVector();
 	Deltatime = 0.0f;
 	Movespeed = 10.0f;
-	checkdooncefordash = true;
-
-
+	candash = false;
+	Tapcount = 0;
+	hold = false;
 
 }
 
@@ -79,52 +79,52 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ACharacterBase::MoveRight(float amount)
 {
 	FTimerHandle DashTimerHandle;
-	
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Bool: %s"), hold ? TEXT("true") : TEXT("false")));
 		
-	
-	if (amount <= 0.1f && !checkdooncefordash)
-	{
-		checkdooncefordash = true;
-	}
-	if (Controller != nullptr && !FMath::IsNearlyZero(amount))
-	{
-		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
-			
-			
-			
-			
-		GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::Dash, TapTherhold, false);
-			
+	/*if (Controller != nullptr && !FMath::IsNearlyZero(amount))
+		{*/
 			
 				
-			
-			
+			if (FMath::Abs(amount) >= 0.8f)
+			{
+				if (!hold)
 
-			
+					Tapcount++;
+					hold = true;
+					if(!candash)
+					{
+					OpenDash();
+					GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::CloseDash, TapTherhold, false);
+					}
+				if (candash && Tapcount == 2)
+				{
 
+					GetCharacterMovement()->MaxWalkSpeed = 1000;
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
 
+				} else
+				{
 
-			
+					GetCharacterMovement()->MaxWalkSpeed = 600;
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
+				}
 
-
-
-
-
-
-
-
-
-
-
-
+			}
+				if (FMath::Abs(amount) <= 0.1f)
+				{
+					hold = false;
+					if (!candash)
+					{
+						Tapcount = 0;
+					}
+					if(candash && Tapcount ==2)
+					{Tapcount = 0;}
+				}
+			//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
 		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
+		//}
+	}
 
-				
-		}
-
-		
-	
-}
 
 void ACharacterBase::NeutralAttack()
 {
@@ -144,9 +144,16 @@ void ACharacterBase::NeutralAttack()
 
 }
 
-void ACharacterBase::Dash()
+void ACharacterBase::CloseDash()
 {
+	if (!hold)
+	{
+		Tapcount = 0;
+	}
+	candash = false;
+}
 
+<<<<<<< HEAD
 		
 	
 	
@@ -156,6 +163,11 @@ void ACharacterBase::Dash()
 	
 	checkdooncefordash = false;
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
+=======
+void ACharacterBase::OpenDash()
+{
+	candash = true;
+>>>>>>> 41b29d19d499817584f6e418c9894589aa4b941e
 }
 
 void ACharacterBase::LandDelay()
