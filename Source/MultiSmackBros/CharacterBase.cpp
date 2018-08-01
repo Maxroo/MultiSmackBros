@@ -162,11 +162,11 @@ void ACharacterBase::LandDelay()
 
 void ACharacterBase::Roll(float dir)
 {
-	
-
-
-
-
+	isInvincible = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
+	ACharacterBase::LaunchCharacter(FVector(0, dir * 50000, 150), true, true);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 1, false);
 
 
 
@@ -192,3 +192,8 @@ void ACharacterBase::Roll(float dir)
 // LaunCharacter test
 //LaunchCharacter(FVector(addforce.X*Dashdistance, 0, 0), false, true);
 //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
+void ACharacterBase::RollEnd()
+{
+	isInvincible = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isNotInvincible");
+}

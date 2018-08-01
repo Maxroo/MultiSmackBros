@@ -24,7 +24,7 @@ public:
 	float TapTherhold;
 	float CurrentTime;
 	bool checkdooncefordash;
-
+	bool isInvincible = false;
 	UPROPERTY(EditAnywhere)
 		float Movespeed;
 
@@ -50,5 +50,5 @@ public:
 	void Dash(); 
 	void LandDelay();
 	void Roll(float dir);
-
+	void RollEnd();
 };
