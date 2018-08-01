@@ -73,23 +73,33 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ACharacterBase::MoveRight(float amount)
 {
+	FTimerHandle DashTimerHandle;
+	
+		
+	
+	if (amount <= 0.1f && !checkdooncefordash)
+	{
+		checkdooncefordash = true;
+	}
 	if (Controller != nullptr && !FMath::IsNearlyZero(amount))
 	{
-
 		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
-		if (FMath::Abs(amount) >= 0.8f && checkdooncefordash)
-		{
-				Dash();
-			/*UWorld* GetTime = nullptr;
-			if ((GetTime->GetRealTimeSeconds() - LastTaptime) <= TapTherhold)
-			{
-				LastTaptime = GetTime->GetRealTimeSeconds();
-			}
-			else
-			{
-				LastTaptime = GetTime->GetRealTimeSeconds();
-			}
-			checkdooncefordash = false;*/
+			
+			
+			
+			
+		GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::Dash, TapTherhold, false);
+			
+			
+				
+			
+			
+
+			
+
+
+
+			
 
 
 
@@ -102,23 +112,13 @@ void ACharacterBase::MoveRight(float amount)
 
 
 
-
-
-
-
-
-
-
-
-				checkdooncefordash = false;
-		}
-
-		if (amount <= 0.1f && !checkdooncefordash)
-		{
-			checkdooncefordash = true;
-		}
 		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
-	}
+
+				
+		}
+
+		
+	
 }
 
 void ACharacterBase::NeutralAttack()
@@ -149,7 +149,7 @@ void ACharacterBase::Dash()
 	
 	
 	
-	
+	checkdooncefordash = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
 }
 
