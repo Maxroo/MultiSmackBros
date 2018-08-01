@@ -43,12 +43,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 	void MoveRight(float amount);
 	virtual void NeutralAttack();
 	bool WasInAir = false;
 	void Dash(); 
 	void LandDelay();
-	void Roll(float dir);
+	void RollRight();
 	void RollEnd();
+	void RollLeft();
 };

@@ -69,8 +69,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-
-
+	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
+	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
 
 
 
@@ -155,7 +155,7 @@ void ACharacterBase::Dash()
 	
 	
 	checkdooncefordash = false;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
 }
 
 void ACharacterBase::LandDelay()
@@ -165,13 +165,13 @@ void ACharacterBase::LandDelay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "DelayOver");
 }
 
-void ACharacterBase::Roll(float dir)
+void ACharacterBase::RollRight()
 {
 	isInvincible = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
-	ACharacterBase::LaunchCharacter(FVector(0, dir * 50000, 150), true, true);
+	ACharacterBase::LaunchCharacter(FVector(0, -1750, 0), true, true);
 	FTimerHandle UnusedHandle;
-	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 1, false);
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, .15, false);
 
 
 
@@ -201,4 +201,34 @@ void ACharacterBase::RollEnd()
 {
 	isInvincible = false;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isNotInvincible");
+	GetCharacterMovement()->StopMovementImmediately();
+}
+void ACharacterBase::RollLeft()
+{
+	isInvincible = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
+	ACharacterBase::LaunchCharacter(FVector(0, 1750, 0), true, true);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 0.15, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
