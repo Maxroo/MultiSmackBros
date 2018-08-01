@@ -32,6 +32,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	FTimerHandle JumpDelay;
+	bool CanJump = true;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -40,5 +43,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void MoveRight(float amount);
-	
+	virtual void NeutralAttack();
+	bool WasInAir = false;
+
+	void LandDelay();
 };

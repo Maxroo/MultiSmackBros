@@ -29,6 +29,7 @@ ACharacterBase::ACharacterBase()
 	LastTaptime = 0.0f;
 	Deltatime = 0.0f;
 	Movespeed = 10.0f;
+
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +44,22 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	this->SetActorLocation(FVector(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z));
+
+	if(GetCharacterMovement()->IsFalling() && CanJump == true )
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		WasInAir = true;
+		CanJump = false;
+	}
+	else if (!GetCharacterMovement()->IsFalling())
+	{
+		if (WasInAir == true)
+		{
+			WasInAir = false;
+			GetWorldTimerManager().SetTimer(JumpDelay, this, &ACharacterBase::LandDelay, 1.0f, false, .25f);
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "GotHere");
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -61,6 +78,17 @@ void ACharacterBase::MoveRight(float amount)
 		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
 		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
 	}
+}
+
+void ACharacterBase::NeutralAttack()
+{
+}
+
+void ACharacterBase::LandDelay()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	CanJump = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "DelayOver");
 }
 
 // LaunCharacter test
