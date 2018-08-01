@@ -100,30 +100,30 @@ void ACharacterBase::MoveRight(float amount)
 				{
 
 					GetCharacterMovement()->MaxWalkSpeed = 1000;
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
 
 				} else
 				{
 
 					GetCharacterMovement()->MaxWalkSpeed = 600;
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
 				}
 
 			}
 				if (FMath::Abs(amount) <= 0.1f)
 				{
 					hold = false;
-					if(!candash)
-					{ Tapcount = 0;}
+					if (!candash)
+					{
+						Tapcount = 0;
+					}
+					if(candash && Tapcount ==2)
+					{Tapcount = 0;}
 				}
 			//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
 		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
 		//}
 	}
-				
-
-		
-	
 
 
 void ACharacterBase::NeutralAttack()
