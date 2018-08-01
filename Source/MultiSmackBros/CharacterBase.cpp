@@ -9,7 +9,7 @@
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -28,9 +28,9 @@ ACharacterBase::ACharacterBase()
 	addforce = GetActorForwardVector();
 	Deltatime = 0.0f;
 	Movespeed = 10.0f;
-	checkdooncefordash = true;
-
-
+	candash = false;
+	Tapcount = 0;
+	hold = false;
 
 }
 
@@ -46,7 +46,7 @@ void ACharacterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	this->SetActorLocation(FVector(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z));
 
-	if(GetCharacterMovement()->IsFalling() && CanJump == true )
+	if (GetCharacterMovement()->IsFalling() && CanJump == true)
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 		WasInAir = true;
@@ -69,8 +69,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-
-
+	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
+	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
 
 
 
@@ -79,52 +79,55 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ACharacterBase::MoveRight(float amount)
 {
 	FTimerHandle DashTimerHandle;
-	
-		
-	
-	if (amount <= 0.1f && !checkdooncefordash)
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Bool: %s"), hold ? TEXT("true") : TEXT("false")));
+
+	/*if (Controller != nullptr && !FMath::IsNearlyZero(amount))
+	{*/
+
+
+	if (FMath::Abs(amount) >= 0.8f)
 	{
-		checkdooncefordash = true;
-	}
-	if (Controller != nullptr && !FMath::IsNearlyZero(amount))
-	{
-		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
-			
-			
-			
-			
-		GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::Dash, TapTherhold, false);
-			
-			
-				
-			
-			
+		if (!hold)
 
-			
+			Tapcount++;
+		hold = true;
+		if (!candash)
+		{
+			OpenDash();
+			GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::CloseDash, TapTherhold, false);
+		}
+		if (candash && Tapcount == 2)
+		{
 
+			GetCharacterMovement()->MaxWalkSpeed = 1000;
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
 
+		}
+		else
+		{
 
-			
-
-
-
-
-
-
-
-
-
-
-
-
-		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
-
-				
+			GetCharacterMovement()->MaxWalkSpeed = 600;
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
 		}
 
-		
-	
+	}
+	if (FMath::Abs(amount) <= 0.1f)
+	{
+		hold = false;
+		if (!candash)
+		{
+			Tapcount = 0;
+		}
+		if (candash && Tapcount == 2)
+		{
+			Tapcount = 0;
+		}
+	}
+	//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
+	AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
+	//}
 }
+
 
 void ACharacterBase::NeutralAttack()
 {
@@ -144,18 +147,22 @@ void ACharacterBase::NeutralAttack()
 
 }
 
-void ACharacterBase::Dash()
+void ACharacterBase::CloseDash()
 {
+	if (!hold)
+	{
+		Tapcount = 0;
+	}
+	candash = false;
+}
 
-		
-	
-	
-	
-	
-	
-	
-	checkdooncefordash = false;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
+
+//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
+
+void ACharacterBase::OpenDash()
+{
+	candash = true;
+
 }
 
 void ACharacterBase::LandDelay()
@@ -165,13 +172,13 @@ void ACharacterBase::LandDelay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "DelayOver");
 }
 
-void ACharacterBase::Roll(float dir)
+void ACharacterBase::RollRight()
 {
 	isInvincible = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
-	ACharacterBase::LaunchCharacter(FVector(0, dir * 50000, 150), true, true);
+	ACharacterBase::LaunchCharacter(FVector(0, -1750, 0), true, true);
 	FTimerHandle UnusedHandle;
-	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 1, false);
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, .15, false);
 
 
 
@@ -201,4 +208,34 @@ void ACharacterBase::RollEnd()
 {
 	isInvincible = false;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isNotInvincible");
+	GetCharacterMovement()->StopMovementImmediately();
+}
+void ACharacterBase::RollLeft()
+{
+	isInvincible = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
+	ACharacterBase::LaunchCharacter(FVector(0, 1750, 0), true, true);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 0.15, false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
