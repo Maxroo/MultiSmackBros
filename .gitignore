@@ -77,3 +77,4 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 *.db
 .vs/MultiSmackBros/v15/Browse.VC.db
+*.modules
