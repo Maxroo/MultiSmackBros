@@ -76,3 +76,4 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 *.db
+.vs/MultiSmackBros/v15/Browse.VC.db
