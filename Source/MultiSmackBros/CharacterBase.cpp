@@ -11,6 +11,18 @@ ACharacterBase::ACharacterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 1800.0f, 0.0f);
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->JumpZVelocity = 700.f;
+	GetCharacterMovement()->AirControl = .7f;
+	GetCharacterMovement()->GravityScale = 1.3f;
+
 	TapTherhold = 0.25f;
 	Dashdistance = 500.0f;
 	addforce = GetActorForwardVector();
@@ -30,7 +42,7 @@ void ACharacterBase::BeginPlay()
 void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	this->SetActorLocation(FVector(1206.637085, this->GetActorLocation().Y, this->GetActorLocation().Z));
+	this->SetActorLocation(FVector(this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z));
 }
 
 // Called to bind functionality to input
@@ -46,7 +58,8 @@ void ACharacterBase::MoveRight(float amount)
 	if (Controller != nullptr && !FMath::IsNearlyZero(amount))
 	{
 
-		AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
+		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
+		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
 	}
 }
 
