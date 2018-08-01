@@ -2,6 +2,10 @@
 	"BuildId": "3944462",
 	"Modules": 
 	{
-		"MultiSmackBros": "UE4Editor-MultiSmackBros-3996.dll"
+<<<<<<< HEAD
+		"MultiSmackBros": "UE4Editor-MultiSmackBros-9934.dll"
+=======
+		"MultiSmackBros": "UE4Editor-MultiSmackBros-4568.dll"
+>>>>>>> 41b29d19d499817584f6e418c9894589aa4b941e
 	}
 }
