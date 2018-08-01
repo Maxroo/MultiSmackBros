@@ -69,6 +69,11 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+
+
+
+
 }
 
 void ACharacterBase::MoveRight(float amount)
