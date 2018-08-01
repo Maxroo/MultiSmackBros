@@ -23,12 +23,14 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->AirControl = .7f;
 	GetCharacterMovement()->GravityScale = 1.3f;
 
-	TapTherhold = 0.25f;
+	TapTherhold = 0.5f;
 	Dashdistance = 500.0f;
 	addforce = GetActorForwardVector();
-	LastTaptime = 0.0f;
 	Deltatime = 0.0f;
 	Movespeed = 10.0f;
+	checkdooncefordash = true;
+
+
 
 }
 
@@ -36,7 +38,6 @@ ACharacterBase::ACharacterBase()
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -76,12 +77,80 @@ void ACharacterBase::MoveRight(float amount)
 	{
 
 		//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
+		if (FMath::Abs(amount) >= 0.8f && checkdooncefordash)
+		{
+				Dash();
+			/*UWorld* GetTime = nullptr;
+			if ((GetTime->GetRealTimeSeconds() - LastTaptime) <= TapTherhold)
+			{
+				LastTaptime = GetTime->GetRealTimeSeconds();
+			}
+			else
+			{
+				LastTaptime = GetTime->GetRealTimeSeconds();
+			}
+			checkdooncefordash = false;*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				checkdooncefordash = false;
+		}
+
+		if (amount <= 0.1f && !checkdooncefordash)
+		{
+			checkdooncefordash = true;
+		}
 		AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
 	}
 }
 
 void ACharacterBase::NeutralAttack()
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+void ACharacterBase::Dash()
+{
+
+		
+	
+	
+	
+	
+	
+	
+	
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
 }
 
 void ACharacterBase::LandDelay()
@@ -91,6 +160,35 @@ void ACharacterBase::LandDelay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "DelayOver");
 }
 
+void ACharacterBase::Roll(float dir)
+{
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+// roll 163 - 190
 // LaunCharacter test
 //LaunchCharacter(FVector(addforce.X*Dashdistance, 0, 0), false, true);
 //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
