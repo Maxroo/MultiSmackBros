@@ -15,15 +15,15 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
-		
 	UPROPERTY(EditAnywhere)
 		float Dashdistance;
-
+	bool hold;
+	int32 Tapcount;
 	float Deltatime;
 	float LastTaptime;
 	float TapTherhold;
 	float CurrentTime;
-	bool checkdooncefordash;
+	bool candash;
 	bool isInvincible = false;
 	UPROPERTY(EditAnywhere)
 		float Movespeed;
@@ -47,7 +47,9 @@ public:
 	void MoveRight(float amount);
 	virtual void NeutralAttack();
 	bool WasInAir = false;
-	void Dash(); 
+	void CloseDash();
+	void OpenDash();
+
 	void LandDelay();
 	void Roll(float dir);
 	void RollEnd();
