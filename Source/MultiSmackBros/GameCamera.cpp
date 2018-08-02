@@ -3,6 +3,8 @@
 #include "GameCamera.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "MyGameStateBase.h"
+#include "Engine/World.h"
 
 // Sets default values
 AGameCamera::AGameCamera()
@@ -19,6 +21,7 @@ AGameCamera::AGameCamera()
 	OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
 	OurCamera->SetupAttachment(OurCameraSpringArm, USpringArmComponent::SocketName);
 	
+	
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +31,7 @@ void AGameCamera::BeginPlay()
 	//test view blend 
 	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
 	controller->SetViewTarget(this);
+	
 }
 
 // Called every frame
