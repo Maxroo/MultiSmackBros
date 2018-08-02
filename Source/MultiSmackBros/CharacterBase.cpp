@@ -54,7 +54,6 @@ void ACharacterBase::Tick(float DeltaTime)
 	}
 	else if (!GetCharacterMovement()->IsFalling())
 	{
-		FreeFall = false;
 		if (WasInAir == true)
 		{
 			WasInAir = false;
@@ -190,19 +189,16 @@ void ACharacterBase::LandDelay()
 
 void ACharacterBase::RollRight()
 {
-	if (FreeFall == false) {
-		if (isInRollEndLag == false) {
-			isInvincible = true;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
-			//ACharacterBase::LaunchCharacter(FVector(0, -1750, 0), true, true);
-			GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, .1, false);
-			GetWorldTimerManager().SetTimer(Smooth, this, &ACharacterBase::IncrementRollRight, .01, true);
-			/*while (GetWorldTimerManager().GetTimerElapsed(UnusedHandle) < 0.15)
-			{
-				this->AddActorWorldOffset(FVector(0, 10, 0), true, nullptr, ETeleportType::None);
-			}*/
-		}
-	}
+	isInvincible = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
+	ACharacterBase::LaunchCharacter(FVector(0, -1750, 0), true, true);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, .15, false);
+
+
+
+
+
 
 
 
@@ -226,34 +222,16 @@ void ACharacterBase::RollRight()
 void ACharacterBase::RollEnd()
 {
 	isInvincible = false;
-	FreeFall = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isNotInvincible");
-	GetWorldTimerManager().ClearTimer(Smooth);
-	isInRollEndLag = true;
-	GetWorldTimerManager().SetTimer(EndRollDelay, this, &ACharacterBase::ResetRoll, .3, false, .3);
-	//GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->StopMovementImmediately();
 }
 void ACharacterBase::RollLeft()
 {
-	if (FreeFall == false) {
-		if (isInRollEndLag == false) {
-			isInvincible = true;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
-			//ACharacterBase::LaunchCharacter(FVector(0, 1750, 0), true, true);
-
-			GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 0.1, false);
-			GetWorldTimerManager().SetTimer(Smooth, this, &ACharacterBase::IncrementRollLeft, 0.01, true);
-			/*for (float f = GetWorldTimerManager().GetTimerElapsed(UnusedHandle); f < .15; f += .001)
-			{
-				this->AddActorWorldOffset(FVector(0, 2, 0), true, nullptr, ETeleportType::None);
-			}
-			/*while (GetWorldTimerManager().GetTimerElapsed(UnusedHandle) < 0.15)
-			{
-				this->AddActorWorldOffset(FVector(0, 10, 0), true, nullptr, ETeleportType::None);
-			}*/
-
-		}
-	}
+	isInvincible = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
+	ACharacterBase::LaunchCharacter(FVector(0, 1750, 0), true, true);
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ACharacterBase::RollEnd, 0.15, false);
 
 
 
@@ -273,20 +251,6 @@ void ACharacterBase::RollLeft()
 
 
 
-}
-
-void ACharacterBase::IncrementRollLeft()
-{
-	this->AddActorWorldOffset(FVector(0, 15, 0), true, nullptr, ETeleportType::None);
-}
 
 
-void ACharacterBase::IncrementRollRight()
-{
-	this->AddActorWorldOffset(FVector(0, -15, 0), true, nullptr, ETeleportType::None);
-}
-
-void ACharacterBase::ResetRoll()
-{
-	isInRollEndLag = false;
 }
