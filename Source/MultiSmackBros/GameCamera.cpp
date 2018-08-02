@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameCamera.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -14,7 +15,8 @@ AGameCamera::AGameCamera()
 void AGameCamera::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	APlayerController* OurPlayer = UGameplayStatics::GetPlayerController(this,0);
+	OurPlayer->SetViewTargetWithBlend(myactor,0);
 }
 
 // Called every frame
