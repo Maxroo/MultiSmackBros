@@ -7,4 +7,8 @@ void ASplatiatorCharacterTest::BeginPlay()
 	this->AutoPossessPlayer = EAutoReceiveInput::Player1;
 }
 
+void ASplatiatorCharacterTest::NeutralAttack()
+{
+	
+}
 

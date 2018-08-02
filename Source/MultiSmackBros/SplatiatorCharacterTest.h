@@ -17,7 +17,7 @@ class MULTISMACKBROS_API ASplatiatorCharacterTest : public ACharacterBase
 
 protected:
 	virtual void BeginPlay() override;
-	
+	virtual void NeutralAttack() override;
 };
 
 

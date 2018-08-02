@@ -23,7 +23,7 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->AirControl = .7f;
 	GetCharacterMovement()->GravityScale = 1.3f;
 
-	TapTherhold = 0.5f;
+	TapTherhold = 0.2f;
 	Dashdistance = 500.0f;
 	addforce = GetActorForwardVector();
 	Deltatime = 0.0f;
@@ -71,47 +71,53 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
 	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
-
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACharacterBase::NeutralAttack);
 
 
 }
 
 void ACharacterBase::MoveRight(float amount)
 {
-	FTimerHandle DashTimerHandle;
+	
 	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, FString::Printf(TEXT("Bool: %s"), hold ? TEXT("true") : TEXT("false")));
 
 	/*if (Controller != nullptr && !FMath::IsNearlyZero(amount))
 	{*/
 
 
-	if (FMath::Abs(amount) >= 0.8f)
+	if (FMath::Abs(amount) >= 0.6f)
 	{
-		if (!hold)
-
-			Tapcount++;
-		hold = true;
-		if (!candash)
+		if (!candash && !hold)
 		{
 			OpenDash();
 			GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ACharacterBase::CloseDash, TapTherhold, false);
 		}
-		if (candash && Tapcount == 2)
+		if (!hold)
 		{
 
-			GetCharacterMovement()->MaxWalkSpeed = 1000;
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
+			Tapcount++;
+			hold = true;
+		}
+		if (candash && Tapcount > 1 && !IsDashing)
+		{
+
+			GetCharacterMovement()->MaxWalkSpeed = 2000;
+			GetCharacterMovement()->MaxAcceleration = 5000;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dashing"));
+			IsDashing = true;
+			
 
 		}
-		else
+		else if (!hold)
 		{
-
-			GetCharacterMovement()->MaxWalkSpeed = 600;
+			//IsDashing = false;
+			//GetCharacterMovement()->MaxWalkSpeed = 600;
+			//GetCharacterMovement()->MaxAcceleration = 200;
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
 		}
 
 	}
-	if (FMath::Abs(amount) <= 0.1f)
+	else if (FMath::Abs(amount) <= 0.1f)
 	{
 		hold = false;
 		if (!candash)
@@ -122,6 +128,14 @@ void ACharacterBase::MoveRight(float amount)
 		{
 			Tapcount = 0;
 		}
+		if (IsDashing) 
+		{
+			IsDashing = false;
+			GetCharacterMovement()->MaxWalkSpeed = 600;
+			GetCharacterMovement()->MaxAcceleration = 600;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("StopDashing"));
+		}
+
 	}
 	//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
 	AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
@@ -154,6 +168,7 @@ void ACharacterBase::CloseDash()
 		Tapcount = 0;
 	}
 	candash = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Dash Closed"));
 }
 
 

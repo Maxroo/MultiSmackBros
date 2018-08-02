@@ -35,6 +35,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	FTimerHandle JumpDelay;
+	FTimerHandle DashTimerHandle;
 	bool CanJump = true;
 
 public:
@@ -49,6 +50,8 @@ public:
 	bool WasInAir = false;
 	void CloseDash();
 	void OpenDash();
+
+	bool IsDashing;
 
 	void LandDelay();
 	void RollRight();
