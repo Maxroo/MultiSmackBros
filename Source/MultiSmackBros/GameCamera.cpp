@@ -31,8 +31,7 @@ void AGameCamera::BeginPlay()
 {
 	Super::BeginPlay();
 	//test view blend 
-	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
-	controller->SetViewTarget(this);
+	
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
@@ -57,26 +56,28 @@ void AGameCamera::getplayers()
 	//}
 
 	//foreach get player controller
-	/*for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("+1 player"));
-
-	}*/
+		int i = 0;
+		APlayerController* controller = UGameplayStatics::GetPlayerController(this, i);
+		controller->SetViewTarget(this);
+		++i;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("%i"),i);
+	}
 	
 
 	// need to for each loop set view target
-	TArray<AActor *> controllers;
+	//TArray<AActor *> controllers;
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerControllerBase::StaticClass(), controllers);
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerControllerBase::StaticClass(), controllers);
 
-	uint8 Len = controllers.Num();
-	for (uint8 i = 0; i < Len; ++i)
-	{
-		//controllers[i]->GetInstigatorController()->CastToPlayerController();
-		/*controllers[i]->SetViewTarget(this);*/
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("set +1 view target player"));
-	}
+	//uint8 Len = controllers.Num();
+	//for (uint8 i = 0; i < Len; ++i)
+	//{
+	//	//controllers[i]->GetInstigatorController()->CastToPlayerController();
+	//	/*controllers[i]->SetViewTarget(this);*/
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("set +1 view target player"));
+	//}
 		
 }
 
