@@ -27,13 +27,12 @@ void AMyGameMode::Tick(float DeltaTime)
 }
 void AMyGameMode::spawnplayer()
 {
-	/*AGameCamera* camera = Cast<AGameCamera>(this);
-	camera->getplayers();*/
-
-
 	UGameplayStatics::CreatePlayer(this, -1, true);
-	
 
+	for (TActorIterator<AGameCamera> actor(GetWorld()); actor; ++actor)
+	{
+		actor->getplayers();
+	}
 }
 
 

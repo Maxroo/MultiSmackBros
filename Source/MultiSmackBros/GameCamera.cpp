@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameCamera.h"
+#include "PlayerControllerBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
@@ -33,7 +34,6 @@ void AGameCamera::BeginPlay()
 	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
 	controller->SetViewTarget(this);
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
-	getplayers();
 }
 
 // Called every frame
@@ -57,13 +57,26 @@ void AGameCamera::getplayers()
 	//}
 
 	//foreach get player controller
-	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	/*for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
 		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("+1 player"));
-		
-	}
 
+	}*/
 	
+
+	// need to for each loop set view target
+	TArray<AActor *> controllers;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerControllerBase::StaticClass(), controllers);
+
+	uint8 Len = controllers.Num();
+	for (uint8 i = 0; i < Len; ++i)
+	{
+		//controllers[i]->GetInstigatorController()->CastToPlayerController();
+		/*controllers[i]->SetViewTarget(this);*/
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("set +1 view target player"));
+	}
+		
 }
 
