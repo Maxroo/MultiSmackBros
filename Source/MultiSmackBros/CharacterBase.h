@@ -53,6 +53,7 @@ public:
 
 	void MoveRight(float amount);
 	virtual void NeutralAttack();
+	virtual void UpSpecial();
 	bool WasInAir = false;
 	void CloseDash();
 	void OpenDash();

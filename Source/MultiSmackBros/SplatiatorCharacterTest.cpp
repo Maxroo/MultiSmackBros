@@ -10,7 +10,9 @@
 void ASplatiatorCharacterTest::NeutralAttack()
 {
 	FName handSocketName = TEXT("Hand");
+
 	AhurtBox *NeutralHB;
+
 	if(!IsInNeutral){
 	GetWorldTimerManager().SetTimer(NeutralAttackDelay, this, &ASplatiatorCharacterTest::ResetNeutral, 0.5f, false);
 	FVector Location(this->GetActorLocation());
