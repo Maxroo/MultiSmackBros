@@ -16,8 +16,8 @@ AMyGameMode::AMyGameMode()
 void AMyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	UGameplayStatics::CreatePlayer(this, -1, true);
-	UGameplayStatics::CreatePlayer(this, -1, true);
+	spawnplayer();
+	
 }
 
 void AMyGameMode::Tick(float DeltaTime)
@@ -27,4 +27,13 @@ void AMyGameMode::Tick(float DeltaTime)
 }
 void AMyGameMode::spawnplayer()
 {
+	/*AGameCamera* camera = Cast<AGameCamera>(this);
+	camera->getplayers();*/
+
+
+	UGameplayStatics::CreatePlayer(this, -1, true);
+	
+
 }
+
+

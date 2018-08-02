@@ -33,12 +33,14 @@ void AGameCamera::BeginPlay()
 	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
 	controller->SetViewTarget(this);
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+	getplayers();
 }
 
 // Called every frame
 void AGameCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	GetWorld()->GetPlayerControllerIterator();
 }
 
 void AGameCamera::getplayers()
@@ -53,6 +55,15 @@ void AGameCamera::getplayers()
 	//	}
 	//	// Do stuff
 	//}
+
+	//foreach get player controller
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("+1 player"));
+		
+	}
+
 	
 }
 

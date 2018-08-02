@@ -19,5 +19,4 @@ public:
 		
 
 protected:
-	TArray<APlayerState> player;
 };
