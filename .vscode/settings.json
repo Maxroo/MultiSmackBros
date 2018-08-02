@@ -1,0 +1,11 @@
+{
+	"files.exclude": {
+		"D:/GitHub/MultiSmackBros/.git": true,
+		"D:/GitHub/MultiSmackBros/.vs": true,
+		"D:/GitHub/MultiSmackBros/.vscode": true,
+		"D:/GitHub/MultiSmackBros/Content": true,
+		"D:/GitHub/MultiSmackBros/Intermediate": true,
+		"D:/GitHub/MultiSmackBros/MultiSmackBros": true,
+		"D:/GitHub/MultiSmackBros/Saved": true
+	}
+}
