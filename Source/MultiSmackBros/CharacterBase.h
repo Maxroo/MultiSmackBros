@@ -14,7 +14,7 @@ class MULTISMACKBROS_API ACharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
-
+	
 	UPROPERTY(EditAnywhere)
 		float Dashdistance;
 	bool hold;

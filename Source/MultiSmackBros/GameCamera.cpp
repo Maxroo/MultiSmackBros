@@ -2,9 +2,10 @@
 
 #include "GameCamera.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/Actor.h"
-#include "MyGameStateBase.h"
 #include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/Actor.h"
+#include "Engine.h"
 
 // Sets default values
 AGameCamera::AGameCamera()
@@ -31,13 +32,27 @@ void AGameCamera::BeginPlay()
 	//test view blend 
 	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
 	controller->SetViewTarget(this);
-	
+	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 // Called every frame
 void AGameCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AGameCamera::getplayers()
+{
+	//UWorld* YourGameWorld = nullptr; // Set this somehow from another UObject or pass it in as an argument or parameter
+	//for (TObjectIterator<UYourObject> Itr; Itr; ++Itr)
+	//{
+	//	// Filter out objects not contained in the target world.
+	//	if (Itr->GetWorld() != YourGameWorld)
+	//	{
+	//		continue;
+	//	}
+	//	// Do stuff
+	//}
+	
 }
 

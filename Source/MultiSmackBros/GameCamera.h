@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include	 "Camera/CameraComponent.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameCamera.generated.h"
@@ -35,6 +35,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
+	void getplayers();
 
 };

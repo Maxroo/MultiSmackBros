@@ -10,8 +10,3 @@ AMyGameStateBase::AMyGameStateBase()
 
 
 }
-
-void AMyGameStateBase::getplayers()
-{
-	
-}

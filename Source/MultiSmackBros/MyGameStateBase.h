@@ -16,6 +16,8 @@ class MULTISMACKBROS_API AMyGameStateBase : public AGameStateBase
 
 public:
 		AMyGameStateBase();
-	
-		void getplayers();
+		
+
+protected:
+	TArray<APlayerState> player;
 };

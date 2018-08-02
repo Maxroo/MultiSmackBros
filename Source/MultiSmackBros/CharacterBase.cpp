@@ -11,7 +11,6 @@ ACharacterBase::ACharacterBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 1800.0f, 0.0f);
 
@@ -31,7 +30,7 @@ ACharacterBase::ACharacterBase()
 	candash = false;
 	Tapcount = 0;
 	hold = false;
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -73,7 +72,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
 	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACharacterBase::NeutralAttack);
-
 
 }
 
