@@ -19,7 +19,6 @@ AGameCamera::AGameCamera()
 	OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
 	OurCamera->SetupAttachment(OurCameraSpringArm, USpringArmComponent::SocketName);
 	
-	
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +26,8 @@ void AGameCamera::BeginPlay()
 {
 	Super::BeginPlay();
 	//test view blend 
+	APlayerController* controller = UGameplayStatics::GetPlayerController(this, 0);
+	controller->SetViewTarget(this);
 }
 
 // Called every frame

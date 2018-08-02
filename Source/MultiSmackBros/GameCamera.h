@@ -28,8 +28,8 @@ protected:
 		USpringArmComponent* OurCameraSpringArm;
 	UCameraComponent* OurCamera;
 
-	UPROPERTY(Category = "AutoPlayerActivation", EditAnywhere)
-		TEnumAsByte<EAutoReceiveInput::Type> AutoActivateForPlayer;
+	//UPROPERTY(Category = "AutoPlayerActivation", EditAnywhere)
+	//	TEnumAsByte<EAutoReceiveInput::Type> AutoActivateForPlayer;
 
 public:
 	// Called every frame
