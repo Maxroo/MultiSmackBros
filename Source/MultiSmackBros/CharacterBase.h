@@ -25,6 +25,8 @@ public:
 	float CurrentTime;
 	bool candash;
 	bool isInvincible = false;
+	bool isInRollEndLag = false;
+
 	UPROPERTY(EditAnywhere)
 		float Movespeed;
 
@@ -36,7 +38,11 @@ protected:
 
 	FTimerHandle JumpDelay;
 	FTimerHandle DashTimerHandle;
+	FTimerHandle UnusedHandle;
+	FTimerHandle Smooth;
+	FTimerHandle EndRollDelay;
 	bool CanJump = true;
+	bool FreeFall = false;
 
 public:
 	// Called every frame
@@ -57,4 +63,7 @@ public:
 	void RollRight();
 	void RollEnd();
 	void RollLeft();
+	void IncrementRollLeft();
+	void IncrementRollRight();
+	void ResetRoll();
 };
