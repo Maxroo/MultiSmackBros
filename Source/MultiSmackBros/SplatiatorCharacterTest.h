@@ -15,9 +15,13 @@ class MULTISMACKBROS_API ASplatiatorCharacterTest : public ACharacterBase
 	GENERATED_BODY()
 
 
+
 protected:
-	virtual void BeginPlay() override;
 	virtual void NeutralAttack() override;
+	void ExitAttack();
+
+	bool IsNeutralAttack = false;
+	FTimerHandle NeutralAttackTime;
 };
 
 
