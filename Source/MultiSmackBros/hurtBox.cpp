@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "hurtBox.h"
+#include "CharacterBase.h"
 
 
 // Sets default values
@@ -15,6 +16,9 @@ AhurtBox::AhurtBox()
 	hurtArea->SetBoxExtent(FVector(30.0f, 30.0f, 30.0f));
 	hurtArea->SetHiddenInGame(false);
 	hurtArea->SetVisibility(true);
+	hurtArea->bGenerateOverlapEvents = true;
+	hurtArea->OnComponentBeginOverlap.AddDynamic(this, &AhurtBox::BeginOverlap);
+	
 
 }
 
@@ -39,3 +43,17 @@ void AhurtBox::GetDestroyed()
 	this->Destroy();
 }
 
+void AhurtBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult &SweepResult) 
+{
+	if(OtherActor != GetInstigator() && Cast<ACharacterBase>(OtherActor) != NULL)
+	{
+		Cast<ACharacterBase>(OtherActor)->GetDamaged(10);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Colided"));
+	}
+
+}

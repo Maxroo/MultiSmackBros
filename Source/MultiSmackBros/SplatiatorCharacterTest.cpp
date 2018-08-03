@@ -18,6 +18,7 @@ void ASplatiatorCharacterTest::NeutralAttack()
 	FVector Location(this->GetActorLocation());
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.Instigator = this;
 	NeutralHB = GetWorld()->SpawnActor<AhurtBox>(Location, Rotation, SpawnInfo);
 	NeutralHB->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, handSocketName);
 	NeutralHB->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));

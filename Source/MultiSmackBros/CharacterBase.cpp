@@ -190,6 +190,7 @@ void ACharacterBase::RollRight()
 {
 	if (FreeFall == false) {
 		if (isInRollEndLag == false) {
+			DisableInput(Cast<APlayerController>(GetController()));
 			isInvincible = true;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
 			//ACharacterBase::LaunchCharacter(FVector(0, -1750, 0), true, true);
@@ -223,6 +224,7 @@ void ACharacterBase::RollRight()
 //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Dashing"));
 void ACharacterBase::RollEnd()
 {
+	EnableInput(Cast<APlayerController>(GetController()));
 	isInvincible = false;
 	FreeFall = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isNotInvincible");
@@ -235,6 +237,7 @@ void ACharacterBase::RollLeft()
 {
 	if (FreeFall == false) {
 		if (isInRollEndLag == false) {
+			DisableInput(Cast<APlayerController>(GetController()));
 			isInvincible = true;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "isInvincible");
 			//ACharacterBase::LaunchCharacter(FVector(0, 1750, 0), true, true);
@@ -294,5 +297,13 @@ void ACharacterBase::UpSpecial()
 
 
 
+
+}
+
+void ACharacterBase::GetDamaged(int damageAmount)
+{
+	DamagePercentage += damageAmount;
+	GetCharacterMovement()->Launch(FVector(0, -1000, 1000));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(damageAmount));
 
 }
