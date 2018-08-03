@@ -288,3 +288,11 @@ void ACharacterBase::ResetRoll()
 {
 	isInRollEndLag = false;
 }
+
+void ACharacterBase::UpSpecial()
+{
+
+
+
+
+}
