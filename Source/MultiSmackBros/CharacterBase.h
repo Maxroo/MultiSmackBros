@@ -62,7 +62,7 @@ public:
 	bool IsDashing;
 	bool WasInAir = false;
 
-	void GetDamaged(int damageAmount);
+	void GetDamaged(int damageAmount, FVector hitLocation);
 	void CloseDash();
 	void OpenDash();
 	void LandDelay();

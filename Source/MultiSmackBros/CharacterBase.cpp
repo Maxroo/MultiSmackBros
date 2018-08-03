@@ -300,10 +300,13 @@ void ACharacterBase::UpSpecial()
 
 }
 
-void ACharacterBase::GetDamaged(int damageAmount)
+void ACharacterBase::GetDamaged(int damageAmount, FVector hitLocation)
 {
 	DamagePercentage += damageAmount;
-	GetCharacterMovement()->Launch(FVector(0, -1000, 1000));
+	FVector pushForce;
+	pushForce = hitLocation - GetActorLocation();
+	pushForce.Normalize();
+	GetCharacterMovement()->Launch(FVector(0.0f, pushForce.Y * 10 * -DamagePercentage, 5.0f * DamagePercentage));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(damageAmount));
 
 }
