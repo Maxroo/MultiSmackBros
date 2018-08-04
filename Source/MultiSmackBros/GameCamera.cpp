@@ -2,6 +2,7 @@
 
 #include "GameCamera.h"
 #include "PlayerControllerBase.h"
+#include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
@@ -31,7 +32,14 @@ void AGameCamera::BeginPlay()
 {
 	Super::BeginPlay();
 	//test view blend 
+
+
 	
+	APlayerController* p1 = GetWorld()->GetFirstPlayerController();
+	if (p1 != NULL)
+	{
+		p1->SetViewTarget(this);
+	}
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
@@ -56,14 +64,26 @@ void AGameCamera::getplayers()
 	//}
 
 	//foreach get player controller
-	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	/*for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
-		int i = 0;
+
+
+		playerControllersarray.Add(Iterator);
+
+		APlayerController* controller = *Iterator;
+		controller->SetViewTarget(this);
+		
+	}	
+*/
+		
+		
+
+
+		/*int i = 0;
 		APlayerController* controller = UGameplayStatics::GetPlayerController(this, i);
 		controller->SetViewTarget(this);
 		++i;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("%i"),i);
-	}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("%i"),i);*/
 	
 
 	// need to for each loop set view target
@@ -79,5 +99,11 @@ void AGameCamera::getplayers()
 	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("set +1 view target player"));
 	//}
 		
+}
+
+void AGameCamera::updatecamera()
+{
+	AMyGameMode* gamemode = (AMyGameMode*)GetWorld()->GetAuthGameMode();
+
 }
 

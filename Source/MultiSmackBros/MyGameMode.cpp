@@ -33,6 +33,42 @@ void AMyGameMode::spawnplayer()
 	{
 		actor->getplayers();
 	}
+
 }
 
+void AMyGameMode::getplayercontrollers()
+{
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		/*Iterator.GetIndex();
+		APlayerController* controller = *Iterator;
+		*/
+		/*APlayerController* controller = *Iterator;*/
+		//playerControllersArray->Add(Iterator->Get());
 
+	}
+
+	for (TActorIterator<APlayerControllerBase> controller(GetWorld()); controller; ++controller)
+	{
+		//playerControllersArray.Add(controller);
+	}
+
+}
+
+void AMyGameMode::getdistancebetweenplayers()
+{
+
+	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P3->GetPawn()));
+	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P3->GetPawn()));
+	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P3->GetPawn()));
+
+}

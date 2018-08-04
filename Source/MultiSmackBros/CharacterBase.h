@@ -37,7 +37,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	int DamagePercentage;
+	float DamagePercentage = 0;
 
 	FTimerHandle JumpDelay;
 	FTimerHandle DashTimerHandle;
@@ -64,7 +64,7 @@ public:
 	bool IsDashing;
 	bool WasInAir = false;
 
-	void GetDamaged(int damageAmount, FVector hitLocation);
+	void GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector);
 	void CloseDash();
 	void OpenDash();
 	void LandDelay();

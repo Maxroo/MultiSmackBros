@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "PlayerControllerBase.h"
+#include "GameFramework/Actor.h"
 #include "GameCamera.h"
 #include "MyGameMode.generated.h"
 
@@ -25,12 +27,26 @@ public:
 	FVector Spawnpoint4;
 
 
-protected:
+
+
+
 	// Called when the game starts or when spawned
+	
+	APlayerController* P1;
+	APlayerController* P2;
+	APlayerController* P3;
+	APlayerController* P4;
+	TArray<APlayerControllerBase> playerControllersArray;
+	TArray<float> Distancebetweenallplayer;
+
+
+protected:
 	virtual void BeginPlay() override;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void spawnplayer();
+	void getplayercontrollers();
+	void getdistancebetweenplayers();
 };
