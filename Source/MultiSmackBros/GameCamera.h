@@ -20,6 +20,9 @@ public:
 	AGameCamera();
 	AActor* myactor;
 
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,6 +30,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* OurCameraSpringArm;
 	UCameraComponent* OurCamera;
+	
+	//APlayerController* P1;
+	//APlayerController* P2;
+	//APlayerController* P3;
+	//APlayerController* P4;
+	//TArray<APlayerControllerBase> playerControllersarray;
 
 	//UPROPERTY(Category = "AutoPlayerActivation", EditAnywhere)
 	//	TEnumAsByte<EAutoReceiveInput::Type> AutoActivateForPlayer;
@@ -36,5 +45,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void getplayers();
+	void updatecamera();
 
 };
