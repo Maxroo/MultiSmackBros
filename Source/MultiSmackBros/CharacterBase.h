@@ -26,7 +26,8 @@ public:
 	bool candash;
 	bool isInvincible = false;
 	bool isInRollEndLag = false;
-
+	bool isPressingUp = false;
+	bool isPressingB = false;
 	UPROPERTY(EditAnywhere)
 		float Movespeed;
 
@@ -45,6 +46,7 @@ protected:
 	FTimerHandle EndRollDelay;
 	bool CanJump = true;
 	bool FreeFall = false;
+
 
 
 public:
@@ -72,4 +74,6 @@ public:
 	void IncrementRollLeft();
 	void IncrementRollRight();
 	void ResetRoll();
+	void isPressingBVoid();
+	void isPressingUpVoid(float amount);
 };
