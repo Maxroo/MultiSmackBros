@@ -36,6 +36,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	int DamagePercentage;
+
 	FTimerHandle JumpDelay;
 	FTimerHandle DashTimerHandle;
 	FTimerHandle UnusedHandle;
@@ -43,6 +45,7 @@ protected:
 	FTimerHandle EndRollDelay;
 	bool CanJump = true;
 	bool FreeFall = false;
+
 
 public:
 	// Called every frame
@@ -52,14 +55,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void MoveRight(float amount);
+
 	virtual void NeutralAttack();
 	virtual void UpSpecial();
-	bool WasInAir = false;
-	void CloseDash();
-	void OpenDash();
 
 	bool IsDashing;
+	bool WasInAir = false;
 
+	void GetDamaged(int damageAmount, FVector hitLocation);
+	void CloseDash();
+	void OpenDash();
 	void LandDelay();
 	void RollRight();
 	void RollEnd();

@@ -18,8 +18,10 @@ void ASplatiatorCharacterTest::NeutralAttack()
 	FVector Location(this->GetActorLocation());
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
 	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.Instigator = this;
 	NeutralHB = GetWorld()->SpawnActor<AhurtBox>(Location, Rotation, SpawnInfo);
 	NeutralHB->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, handSocketName);
+	DisableInput(Cast<APlayerController>(GetController()));
 	NeutralHB->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Attack"));
 	IsInNeutral = true;
@@ -29,4 +31,5 @@ void ASplatiatorCharacterTest::NeutralAttack()
 void ASplatiatorCharacterTest::ResetNeutral()
 {
 	IsInNeutral = false;
+	EnableInput(Cast<APlayerController>(GetController()));
 }
