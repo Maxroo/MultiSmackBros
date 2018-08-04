@@ -72,6 +72,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
 	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACharacterBase::NeutralAttack);
+	PlayerInputComponent->BindAction("Special", IE_Pressed, this, &ACharacterBase::isPressingBVoid);
+	PlayerInputComponent->BindAxis("Up", this, &ACharacterBase::isPressingUpVoid);
 
 }
 
@@ -309,4 +311,18 @@ void ACharacterBase::GetDamaged(int damageAmount, FVector hitLocation)
 	GetCharacterMovement()->Launch(FVector(0.0f, pushForce.Y * 10 * -DamagePercentage, 5.0f * DamagePercentage));
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(damageAmount));
 
+}
+void ACharacterBase::isPressingBVoid()
+{
+	isPressingB = true;
+}
+void ACharacterBase::isPressingUpVoid(float amount)
+{
+	if (amount >= 0) {
+		isPressingUp = true;
+	}
+	else
+	{
+		isPressingUp = false;
+	}
 }
