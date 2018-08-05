@@ -4,6 +4,8 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine.h"
+#include "Array.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -71,7 +73,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("RollRight", IE_Pressed, this, &ACharacterBase::RollRight);
 	PlayerInputComponent->BindAction("RollLeft", IE_Pressed, this, &ACharacterBase::RollLeft);
-	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACharacterBase::NeutralAttack);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACharacterBase::NeutralAttackCheck);
 	PlayerInputComponent->BindAction("Special", IE_Pressed, this, &ACharacterBase::isPressingBVoid);
 	PlayerInputComponent->BindAxis("Up", this, &ACharacterBase::isPressingUpVoid);
 
@@ -138,10 +140,37 @@ void ACharacterBase::MoveRight(float amount)
 		}
 
 	}
+
+	if (IsInHitstun == false){
 	//AddMovementInput(this->GetActorForwardVector(), amount*Movespeed, false);
 	AddMovementInput(FVector(0.f, -1.f, 0.f), amount);
 	//}
+	}
 }
+
+
+
+void ACharacterBase::NeutralAttackCheck()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("AAAAAAAAAAAAAAAAAAAAAA!!!!!"));
+	if(FreeFall == false && IsInHitstun == false)
+	{
+		if(isPressingUp)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EEEEEEEEEEEEEEEEEEEEEE!!!!!"));
+			this->NeutralAttack();
+			//call up A
+		} else 
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("IIIIIIIIIIIIIIIIIIIIIIII!!!!!"));
+			this->NeutralAttack();
+			Tapcount = 0;
+		}
+	}
+}
+
+
+
 
 
 void ACharacterBase::NeutralAttack()
@@ -302,13 +331,15 @@ void ACharacterBase::UpSpecial()
 
 }
 
-void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector)
+void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector, float hitStunTime)
 {
 	DamagePercentage += damageAmount;
 	FVector pushForce;
 	pushForce = hitLocation - GetActorLocation();
 	pushForce.Normalize();
 	GetCharacterMovement()->Launch(FVector(0.0f, pushVector.Y * DamagePercentage * -pushForce.Y, pushVector.Z * DamagePercentage));
+	IsInHitstun = true;
+	GetWorldTimerManager().SetTimer(HitStun, this, &ACharacterBase::ExitHitStun, hitStunTime * DamagePercentage, false);
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(damageAmount));
 
 }
@@ -318,11 +349,44 @@ void ACharacterBase::isPressingBVoid()
 }
 void ACharacterBase::isPressingUpVoid(float amount)
 {
-	if (amount >= 0) {
+	if (amount >= 0.5f) {
 		isPressingUp = true;
 	}
 	else
 	{
 		isPressingUp = false;
 	}
+}
+
+void ACharacterBase::ExitHitStun()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("EndHitStun"));
+	IsInHitstun = false;
+}
+
+void ACharacterBase::Death()
+{
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARespawnPoint::StaticClass(), Spawns);
+	GetMesh()->SetVisibility(false);
+	GetCharacterMovement()->StopMovementImmediately();
+
+	//GetCharacterMovement()->NotifyJumpApex() MIGHT BE IMPORTANT, SHOULD PROBABLY THINK OF USING IT 
+
+	GetCharacterMovement()->ReinitializeProperties();
+
+	MoveRight(0);
+	DisableInput(Cast<APlayerController>(GetController()));
+	
+
+	GetWorldTimerManager().SetTimer(RespawnDelay, this, &ACharacterBase::Respawn, 2, false);
+
+} 
+
+void ACharacterBase::Respawn()
+{
+	DamagePercentage = 0;
+	this->SetActorLocation(Spawns[FMath::RandRange(0, Spawns.Num()-1)]->GetActorLocation());
+	GetCharacterMovement()->ReinitializeProperties();
+	GetMesh()->SetVisibility(true);
+	EnableInput(Cast<APlayerController>(GetController()));
 }

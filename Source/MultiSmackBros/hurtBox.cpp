@@ -43,6 +43,8 @@ void AhurtBox::GetDestroyed()
 	this->Destroy();
 }
 
+
+
 void AhurtBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
@@ -52,7 +54,7 @@ void AhurtBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	if(OtherActor != GetInstigator() && Cast<ACharacterBase>(OtherActor) != NULL)
 	{
-		Cast<ACharacterBase>(OtherActor)->GetDamaged(0.1f, GetInstigator()->GetActorLocation(), FVector(0.0f, 1000.0f, 500.0f));
+		Cast<ACharacterBase>(OtherActor)->GetDamaged(0.1f, GetInstigator()->GetActorLocation(), FVector(0.0f, 1000.0f, 500.0f), 0.7f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Colided"));
 	}
 

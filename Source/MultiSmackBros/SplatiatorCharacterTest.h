@@ -17,9 +17,12 @@ class MULTISMACKBROS_API ASplatiatorCharacterTest : public ACharacterBase
 
 protected:
 
+
+	virtual void BeginPlay() override;
+	bool IsInNeutral = false;
 	virtual void NeutralAttack() override;
 	FTimerHandle NeutralAttackDelay;
-	bool IsInNeutral = false;
+
 
 public:
 

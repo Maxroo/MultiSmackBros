@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "RespawnPoint.h"
+
 #include "CharacterBase.generated.h"
+
 
 UCLASS()
 class MULTISMACKBROS_API ACharacterBase : public ACharacter
@@ -14,7 +17,7 @@ class MULTISMACKBROS_API ACharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
-	
+
 	UPROPERTY(EditAnywhere)
 		float Dashdistance;
 	bool hold;
@@ -44,8 +47,16 @@ protected:
 	FTimerHandle UnusedHandle;
 	FTimerHandle Smooth;
 	FTimerHandle EndRollDelay;
+	FTimerHandle HitStun;
+	FTimerHandle RespawnDelay;
+
+
+
 	bool CanJump = true;
 	bool FreeFall = false;
+	bool IsInHitstun = false;
+
+	TArray<AActor*> Spawns;
 
 
 
@@ -59,12 +70,13 @@ public:
 	void MoveRight(float amount);
 
 	virtual void NeutralAttack();
+
 	virtual void UpSpecial();
 
 	bool IsDashing;
 	bool WasInAir = false;
 
-	void GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector);
+	void GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector, float hitstunTime);
 	void CloseDash();
 	void OpenDash();
 	void LandDelay();
@@ -76,4 +88,8 @@ public:
 	void ResetRoll();
 	void isPressingBVoid();
 	void isPressingUpVoid(float amount);
+	void NeutralAttackCheck();
+	void ExitHitStun();
+	void Death();
+	void Respawn();
 };
