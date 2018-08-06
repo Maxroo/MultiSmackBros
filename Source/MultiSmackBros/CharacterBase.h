@@ -31,6 +31,8 @@ public:
 	bool isInRollEndLag = false;
 	bool isPressingUp = false;
 	bool isPressingB = false;
+	bool isHoldingRight = false;
+	bool isHoldingLeft = false;
 	UPROPERTY(EditAnywhere)
 		float Movespeed;
 
@@ -72,6 +74,8 @@ public:
 	virtual void NeutralAttack();
 
 	virtual void UpSpecial();
+
+	virtual void SideSpecial(int dir);
 
 	bool IsDashing;
 	bool WasInAir = false;

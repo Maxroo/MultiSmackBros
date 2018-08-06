@@ -37,4 +37,8 @@ void ASwiftCharacterTest::ResetNeutral()
 	IsInNeutral = false;
 	EnableInput(Cast<APlayerController>(GetController()));
 }
+void ASwiftCharacterTest::SideSpecial(int dir)
+{
+	this->LaunchCharacter(FVector(0, 1000 * -dir, 150), true, true);
+}
 

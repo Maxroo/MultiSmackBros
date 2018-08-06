@@ -15,6 +15,7 @@ class MULTISMACKBROS_API ASwiftCharacterTest : public ACharacterBase
 protected:
 	virtual void NeutralAttack() override;
 	virtual void UpSpecial() override;
+	virtual void SideSpecial(int dir) override;
 	FTimerHandle NeutralAttackDelay;
 	bool IsInNeutral = false;
 

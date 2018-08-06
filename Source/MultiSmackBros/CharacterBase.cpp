@@ -87,7 +87,22 @@ void ACharacterBase::MoveRight(float amount)
 	/*if (Controller != nullptr && !FMath::IsNearlyZero(amount))
 	{*/
 
-
+	if (amount >= 0.5f)
+	{
+		isHoldingRight = true;
+		if (isPressingB && !FreeFall) {
+			FreeFall = true;
+			this->SideSpecial(1);
+		}
+	}
+	else if (amount <= -0.5f)
+	{
+		isHoldingLeft = true;
+		if (isPressingB && !FreeFall) {
+			FreeFall = true;
+			this->SideSpecial(-1);
+		}
+	}
 	if (FMath::Abs(amount) >= 0.6f)
 	{
 		if (!candash && !hold)
@@ -330,6 +345,10 @@ void ACharacterBase::UpSpecial()
 
 
 }
+void ACharacterBase::SideSpecial(int dir)
+{
+
+}
 
 void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector, float hitStunTime)
 {
@@ -346,7 +365,7 @@ void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector
 void ACharacterBase::isPressingBVoid()
 {
 	isPressingB = true;
-	GetWorldTimerManager().SetTimer(ReleaseB, this, &ACharacterBase::ReleaseBVoid, 1, false);
+	GetWorldTimerManager().SetTimer(ReleaseB, this, &ACharacterBase::ReleaseBVoid, .1, false);
 }
 void ACharacterBase::isPressingUpVoid(float amount)
 {
