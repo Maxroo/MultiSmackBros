@@ -346,11 +346,16 @@ void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector
 void ACharacterBase::isPressingBVoid()
 {
 	isPressingB = true;
+	GetWorldTimerManager().SetTimer(ReleaseB, this, &ACharacterBase::ReleaseBVoid, 1, false);
 }
 void ACharacterBase::isPressingUpVoid(float amount)
 {
 	if (amount >= 0.5f) {
 		isPressingUp = true;
+		if (isPressingUp && isPressingB && !FreeFall) {
+			this->UpSpecial();
+			FreeFall = true;
+		}
 	}
 	else
 	{
@@ -389,4 +394,9 @@ void ACharacterBase::Respawn()
 	GetCharacterMovement()->ReinitializeProperties();
 	GetMesh()->SetVisibility(true);
 	EnableInput(Cast<APlayerController>(GetController()));
+}
+void ACharacterBase::ReleaseBVoid()
+{
+	isPressingB = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Emerald, TEXT("ReleasedB"));
 }

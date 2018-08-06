@@ -30,7 +30,7 @@ void ASwiftCharacterTest::NeutralAttack()
 
 void ASwiftCharacterTest::UpSpecial()
 {
-
+	this->LaunchCharacter(FVector(0, 0, 800), true, true);
 }
 void ASwiftCharacterTest::ResetNeutral()
 {

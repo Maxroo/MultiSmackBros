@@ -49,7 +49,7 @@ protected:
 	FTimerHandle EndRollDelay;
 	FTimerHandle HitStun;
 	FTimerHandle RespawnDelay;
-
+	FTimerHandle ReleaseB;
 
 
 	bool CanJump = true;
@@ -92,4 +92,5 @@ public:
 	void ExitHitStun();
 	void Death();
 	void Respawn();
+	void ReleaseBVoid();
 };
