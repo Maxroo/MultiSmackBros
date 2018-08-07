@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MyGameMode.h"
+#include "Engine.h"
 #include "GameFramework/Actor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Pawn.h"
+#include "PlayerControllerBase.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameCamera.generated.h"
 
@@ -30,7 +33,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* OurCameraSpringArm;
 	UCameraComponent* OurCamera;
-	
+
 	//APlayerController* P1;
 	//APlayerController* P2;
 	//APlayerController* P3;
@@ -40,11 +43,15 @@ protected:
 	//UPROPERTY(Category = "AutoPlayerActivation", EditAnywhere)
 	//	TEnumAsByte<EAutoReceiveInput::Type> AutoActivateForPlayer;
 
+	float SpringArmlength;
+	FVector CameraPos;
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	void getplayers();
-	void updatecamera();
+	FVector updatecamera(APawn *playerCharacter);
+	float updatespringarm(APawn *PCA, APawn *PCB);
 
 };

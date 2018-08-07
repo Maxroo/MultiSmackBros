@@ -17,7 +17,7 @@ void AMyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	spawnplayer();
-	
+
 }
 
 void AMyGameMode::Tick(float DeltaTime)
@@ -28,11 +28,10 @@ void AMyGameMode::Tick(float DeltaTime)
 void AMyGameMode::spawnplayer()
 {
 	UGameplayStatics::CreatePlayer(this, -1, true);
-
-	for (TActorIterator<AGameCamera> actor(GetWorld()); actor; ++actor)
-	{
-		actor->getplayers();
-	}
+	//for (TActorIterator<AGameCamera> actor(GetWorld()); actor; ++actor)
+	//{
+	//	actor->getplayers();
+	//}
 
 }
 
@@ -58,17 +57,40 @@ void AMyGameMode::getplayercontrollers()
 void AMyGameMode::getdistancebetweenplayers()
 {
 
-	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P2->GetPawn()));
-	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P3->GetPawn()));
-	Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P4->GetPawn()));
-	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P1->GetPawn()));
-	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P3->GetPawn()));
-	Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P4->GetPawn()));
-	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P1->GetPawn()));
-	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P2->GetPawn()));
-	Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P4->GetPawn()));
-	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P1->GetPawn()));
-	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P2->GetPawn()));
-	Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P3->GetPawn()));
+	//Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	//Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P3->GetPawn()));
+	//Distancebetweenallplayer.Add(P1->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	//Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	//Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P3->GetPawn()));
+	//Distancebetweenallplayer.Add(P2->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	//Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	//Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	//Distancebetweenallplayer.Add(P3->GetPawn()->GetDistanceTo(P4->GetPawn()));
+	//Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P1->GetPawn()));
+	//Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P2->GetPawn()));
+	//Distancebetweenallplayer.Add(P4->GetPawn()->GetDistanceTo(P3->GetPawn()));
 
+}
+
+void AMyGameMode::getplayercharacter()
+{
+	if (P1->GetPawn())
+	{
+		PC1 = P1->GetPawn();
+	}
+
+	if (P2->GetPawn())
+	{
+		PC2 = P2->GetPawn();
+	}
+
+	if (P3->GetPawn())
+	{
+		PC3 = P3->GetPawn();
+	}
+
+	if (P4->GetPawn())
+	{
+		PC4 = P4->GetPawn();
+	}
 }

@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameCamera.h"
-#include "PlayerControllerBase.h"
-#include "MyGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
@@ -23,8 +21,7 @@ AGameCamera::AGameCamera()
 	OurCameraSpringArm->CameraLagSpeed = 3.0f;
 	OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
 	OurCamera->SetupAttachment(OurCameraSpringArm, USpringArmComponent::SocketName);
-	
-	
+
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +31,7 @@ void AGameCamera::BeginPlay()
 	//test view blend 
 
 
-	
+
 	APlayerController* p1 = GetWorld()->GetFirstPlayerController();
 	if (p1 != NULL)
 	{
@@ -68,23 +65,23 @@ void AGameCamera::getplayers()
 	{
 
 
-		playerControllersarray.Add(Iterator);
+	playerControllersarray.Add(Iterator);
 
-		APlayerController* controller = *Iterator;
-		controller->SetViewTarget(this);
-		
-	}	
-*/
-		
-		
+	APlayerController* controller = *Iterator;
+	controller->SetViewTarget(this);
+
+	}
+	*/
 
 
-		/*int i = 0;
-		APlayerController* controller = UGameplayStatics::GetPlayerController(this, i);
-		controller->SetViewTarget(this);
-		++i;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("%i"),i);*/
-	
+
+
+	/*int i = 0;
+	APlayerController* controller = UGameplayStatics::GetPlayerController(this, i);
+	controller->SetViewTarget(this);
+	++i;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("%i"),i);*/
+
 
 	// need to for each loop set view target
 	//TArray<AActor *> controllers;
@@ -98,12 +95,34 @@ void AGameCamera::getplayers()
 	//	/*controllers[i]->SetViewTarget(this);*/
 	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("set +1 view target player"));
 	//}
-		
+
 }
 
-void AGameCamera::updatecamera()
+FVector AGameCamera::updatecamera(APawn *playerCharacter)
 {
-	AMyGameMode* gamemode = (AMyGameMode*)GetWorld()->GetAuthGameMode();
+	FVector Location;
+	if (playerCharacter)
+	{
+		Location == playerCharacter->GetActorLocation();
+	}
+	else
+	{
+		Location.Set(0.0f, 0.0f, 0.0f);
+	}
+	return Location;
+}
 
+float AGameCamera::updatespringarm(APawn *PCA, APawn *PCB)
+{
+	float distance;
+	if (PCA && PCB)
+	{
+		distance = PCA->GetDistanceTo(PCB);
+	}
+	else
+	{
+		distance = 0.0f;
+	}
+	return distance;
 }
 
