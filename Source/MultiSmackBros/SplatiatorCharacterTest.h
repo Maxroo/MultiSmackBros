@@ -21,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 	bool IsInNeutral = false;
 	virtual void NeutralAttack() override;
+
 	FTimerHandle NeutralAttackDelay;
 
 

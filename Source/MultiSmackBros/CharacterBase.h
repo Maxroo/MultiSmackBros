@@ -43,6 +43,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	float DamagePercentage = 0;
+	float neutralStartup = 0.1f;
+
+	bool isInNeutralAttack;
 
 	FTimerHandle JumpDelay;
 	FTimerHandle DashTimerHandle;
@@ -52,6 +55,8 @@ protected:
 	FTimerHandle HitStun;
 	FTimerHandle RespawnDelay;
 	FTimerHandle ReleaseB;
+	FTimerHandle NStartup;
+	FTimerHandle NRecovery;
 
 
 	bool CanJump = true;
@@ -80,6 +85,10 @@ public:
 	bool IsDashing;
 	bool WasInAir = false;
 
+	float neutralRecovery = 0.1f;
+	
+	void StartRecovery(float time);
+
 	void GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector, float hitstunTime);
 	void CloseDash();
 	void OpenDash();
@@ -97,4 +106,5 @@ public:
 	void Death();
 	void Respawn();
 	void ReleaseBVoid();
+	void FinishRecovery();
 };

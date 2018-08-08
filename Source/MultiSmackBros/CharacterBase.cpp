@@ -168,24 +168,37 @@ void ACharacterBase::MoveRight(float amount)
 void ACharacterBase::NeutralAttackCheck()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("AAAAAAAAAAAAAAAAAAAAAA!!!!!"));
-	if(FreeFall == false && IsInHitstun == false)
+	if(FreeFall == false && IsInHitstun == false && isInNeutralAttack == false)
 	{
 		if(isPressingUp)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EEEEEEEEEEEEEEEEEEEEEE!!!!!"));
-			this->NeutralAttack();
+			GetWorldTimerManager().SetTimer(NStartup, this, &ACharacterBase::NeutralAttack, neutralStartup, false);
+			DisableInput(Cast<APlayerController>(GetController()));
+			isInNeutralAttack = true;
+			Tapcount = 0;
 			//call up A
 		} else 
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("IIIIIIIIIIIIIIIIIIIIIIII!!!!!"));
-			this->NeutralAttack();
+			GetWorldTimerManager().SetTimer(NStartup, this, &ACharacterBase::NeutralAttack, neutralStartup, false);
+			DisableInput(Cast<APlayerController>(GetController()));
+			isInNeutralAttack = true;
 			Tapcount = 0;
 		}
 	}
 }
 
+void ACharacterBase::FinishRecovery()
+{
+	isInNeutralAttack = false;
+	EnableInput(Cast<APlayerController>(GetController()));
+}
 
-
+void ACharacterBase::StartRecovery(float time)
+{
+	GetWorldTimerManager().SetTimer(NRecovery, this, &ACharacterBase::FinishRecovery, time, false);
+}
 
 
 void ACharacterBase::NeutralAttack()
@@ -350,6 +363,8 @@ void ACharacterBase::SideSpecial(int dir)
 
 }
 
+
+
 void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector pushVector, float hitStunTime)
 {
 	DamagePercentage += damageAmount;
@@ -362,6 +377,11 @@ void ACharacterBase::GetDamaged(float damageAmount, FVector hitLocation, FVector
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(damageAmount));
 
 }
+
+
+
+
+
 void ACharacterBase::isPressingBVoid()
 {
 	isPressingB = true;

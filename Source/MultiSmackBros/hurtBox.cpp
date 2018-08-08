@@ -11,13 +11,8 @@ AhurtBox::AhurtBox()
 
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	UBoxComponent *hurtArea;
-	hurtArea = CreateDefaultSubobject<UBoxComponent>(TEXT("HBox"));
-	hurtArea->SetBoxExtent(FVector(30.0f, 30.0f, 30.0f));
-	hurtArea->SetHiddenInGame(false);
-	hurtArea->SetVisibility(true);
-	hurtArea->bGenerateOverlapEvents = true;
-	hurtArea->OnComponentBeginOverlap.AddDynamic(this, &AhurtBox::BeginOverlap);
+	
+	
 	
 
 }
@@ -31,6 +26,29 @@ void AhurtBox::BeginPlay()
 	
 }
 
+
+void AhurtBox::OverrideDefaults(float attackDamage, float hitstun, FVector pushDirection, FVector boxExtent)
+{
+	damageDealt = attackDamage;
+	hitStun = hitstun;
+	pushVector = pushDirection;
+	boxSize = boxExtent;
+
+}
+
+void AhurtBox::CreateBox()
+{
+	hurtArea = CreateDefaultSubobject<UBoxComponent>(TEXT("HBox"));
+	hurtArea->SetBoxExtent(boxSize);
+	hurtArea->SetHiddenInGame(false);
+	hurtArea->SetVisibility(true);
+	hurtArea->bGenerateOverlapEvents = true;
+	hurtArea->OnComponentBeginOverlap.AddDynamic(this, &AhurtBox::BeginOverlap);
+}
+
+
+
+
 // Called every frame
 void AhurtBox::Tick(float DeltaTime)
 {
@@ -40,6 +58,7 @@ void AhurtBox::Tick(float DeltaTime)
 
 void AhurtBox::GetDestroyed() 
 {
+	Cast<ACharacterBase>(GetInstigator())->StartRecovery(Cast<ACharacterBase>(GetInstigator())->neutralRecovery);
 	this->Destroy();
 }
 
@@ -54,7 +73,7 @@ void AhurtBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	if(OtherActor != GetInstigator() && Cast<ACharacterBase>(OtherActor) != NULL)
 	{
-		Cast<ACharacterBase>(OtherActor)->GetDamaged(0.1f, GetInstigator()->GetActorLocation(), FVector(0.0f, 1000.0f, 500.0f), 0.7f);
+		Cast<ACharacterBase>(OtherActor)->GetDamaged(damageDealt, GetInstigator()->GetActorLocation(), pushVector, hitStun);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("Colided"));
 	}
 

@@ -22,6 +22,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	FTimerHandle ActiveTime;
+	float damageDealt = 0.1f;
+	FVector pushVector = FVector(0.0f, 1000.0f, 500.0f);
+	float hitStun = 0.5f;
+	FVector boxSize = FVector(30.0f, 30.0f, 30.0f);
+
+	UBoxComponent *hurtArea;
 
 public:	
 	// Called every frame
@@ -34,5 +40,9 @@ public:
 			int32 OtherBodyIndex,
 			bool bFromSweep,
 			const FHitResult &SweepResult);
+	
+	void CreateBox();
+
+	void OverrideDefaults(float attackDamage, float hitStun, FVector pushDirection, FVector boxExtent);
 	
 };
