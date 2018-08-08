@@ -34,6 +34,9 @@ protected:
 		USpringArmComponent* OurCameraSpringArm;
 	UCameraComponent* OurCamera;
 
+
+	FTimerHandle CameraTimerHandle;
+
 	//APlayerController* P1;
 	//APlayerController* P2;
 	//APlayerController* P3;
@@ -45,7 +48,7 @@ protected:
 
 	float SpringArmlength;
 	FVector CameraPos;
-
+	FVector defaultpos;
 
 public:
 	// Called every frame
@@ -53,5 +56,7 @@ public:
 	void getplayers();
 	FVector updatecamera(APawn *playerCharacter);
 	float updatespringarm(APawn *PCA, APawn *PCB);
+
+	void setcamera();
 
 };

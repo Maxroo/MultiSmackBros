@@ -21,7 +21,7 @@ AGameCamera::AGameCamera()
 	OurCameraSpringArm->CameraLagSpeed = 3.0f;
 	OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
 	OurCamera->SetupAttachment(OurCameraSpringArm, USpringArmComponent::SocketName);
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -38,13 +38,20 @@ void AGameCamera::BeginPlay()
 		p1->SetViewTarget(this);
 	}
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+	defaultpos = GetActorLocation();
 }
 
 // Called every frame
 void AGameCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GetWorld()->GetPlayerControllerIterator();
+	APlayerController* p1 = GetWorld()->GetFirstPlayerController();
+
+	setcamera();
+	CameraPos = updatecamera(p1->GetPawn());
+	/*GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, p1->GetPawn()->GetActorLocation().ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, updatecamera(p1->GetPawn()).ToString());*/
+
 }
 
 void AGameCamera::getplayers()
@@ -101,14 +108,18 @@ void AGameCamera::getplayers()
 FVector AGameCamera::updatecamera(APawn *playerCharacter)
 {
 	FVector Location;
+
 	if (playerCharacter)
 	{
-		Location == playerCharacter->GetActorLocation();
+		Location = playerCharacter->GetActorLocation();
+
 	}
 	else
 	{
 		Location.Set(0.0f, 0.0f, 0.0f);
 	}
+	
+	
 	return Location;
 }
 
@@ -123,6 +134,14 @@ float AGameCamera::updatespringarm(APawn *PCA, APawn *PCB)
 	{
 		distance = 0.0f;
 	}
+
 	return distance;
 }
 
+void AGameCamera::setcamera()
+{
+
+	SetActorLocation(FMath::VInterpTo(FVector(GetActorLocation().X,defaultpos.Y,defaultpos.Z), FVector(GetActorLocation().X,CameraPos.Y, CameraPos.Z), FApp::GetDeltaTime(),20.0f));
+	
+	defaultpos = GetActorLocation();
+}
