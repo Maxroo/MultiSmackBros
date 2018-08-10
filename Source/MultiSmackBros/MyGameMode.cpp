@@ -39,9 +39,9 @@ void AMyGameMode::getplayercontrollers()
 {
 	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
-		/*Iterator.GetIndex();
-		APlayerController* controller = *Iterator;
-		*/
+		//Iterator.GetIndex();
+		//APlayerControllerBase* controller; 
+		//*Iterator->Get();
 		/*APlayerController* controller = *Iterator;*/
 		//playerControllersArray->Add(Iterator->Get());
 
