@@ -11,12 +11,13 @@
 AGameCamera::AGameCamera()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	SpringArmlength = 300.f;
+	//PrimaryActorTick.bCanEverTick = true;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	OurCameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
 	OurCameraSpringArm->SetupAttachment(RootComponent);
 	OurCameraSpringArm->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 50.0f), FRotator(0.0f, 0.0f, 0.0f));
-	OurCameraSpringArm->TargetArmLength = 400.f;
+	OurCameraSpringArm->TargetArmLength = SpringArmlength;
 	OurCameraSpringArm->bEnableCameraLag = true;
 	OurCameraSpringArm->CameraLagSpeed = 3.0f;
 	OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
@@ -46,9 +47,14 @@ void AGameCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	APlayerController* p1 = GetWorld()->GetFirstPlayerController();
-
+	APlayerController* p2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+	
 	setcamera();
-	CameraPos = updatecamera(p1->GetPawn());
+	CameraPos = ((updatecamera(p1->GetPawn()) + updatecamera(p2->GetPawn()))) / 2;
+
+	SpringArmlength += updatespringarm(p1->GetPawn(), p2->GetPawn());
+
+
 	/*GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, p1->GetPawn()->GetActorLocation().ToString());
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, updatecamera(p1->GetPawn()).ToString());*/
 
@@ -143,5 +149,7 @@ void AGameCamera::setcamera()
 
 	SetActorLocation(FMath::VInterpTo(FVector(GetActorLocation().X,defaultpos.Y,defaultpos.Z), FVector(GetActorLocation().X,CameraPos.Y, CameraPos.Z), FApp::GetDeltaTime(),20.0f));
 	
+	FMath::Clamp(SpringArmlength, 300.f, 500.f);
+
 	defaultpos = GetActorLocation();
 }
